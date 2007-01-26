@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!-- ***************************************** -->
-<!-- ** Basic Module						** -->
-<!-- **										** -->
-<!-- ** @author Burke Mamlin				** -->
-<!-- ** @version 1.0						** -->
+<!-- ** Rest Module                         ** -->
+<!-- **                                     ** -->
+<!-- ** @author Burke Mamlin                ** -->
+<!-- ** @version 1.0                        ** -->
 <!-- ***************************************** -->
 <project name="RestModule" default="package-module">
 		
