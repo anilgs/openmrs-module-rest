@@ -22,7 +22,12 @@ public class RestAdministrationAdvisor implements AfterReturningAdvice {
 		String methodName = method.getName();
 
 		if (!methodName.startsWith("get") && methodName.contains("GlobalPropert")) {
-			RestUtil.updateGlobalProperties();
+			try {
+				RestUtil.updateGlobalProperties();
+			}
+			catch (Throwable t) {
+				// pass
+			}
 		}
 		
 	}
