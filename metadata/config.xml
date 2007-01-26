@@ -8,7 +8,7 @@
 	<name>@MODULE_NAME@</name>
 	<version>@MODULE_VERSION@</version>
 	<package>org.openmrs.module.restmodule</package>
-	<author>Ben Wolfe</author>
+	<author>Burke Mamlin</author>
 	<description>
 			Very Basic OpenMRS Rest Module
 	</description>
@@ -16,7 +16,7 @@
 	<activator>org.openmrs.module.restmodule.RestModuleActivator</activator>
 	
 	<!-- <library id="foobar" path="org/openmrs/module/restModule" type="resources" /> -->
-	<!-- <updateURL>http://resources.openmrs.org/modules/restModule/update.rdf</updateURL> -->
+	<updateURL>http://resources.openmrs.org/modules/restModule/update.rdf</updateURL>
 	<!-- /Base Module Properties -->
 	
 	
@@ -28,13 +28,13 @@
 	 /Extensions -->
 	
 	
-	<!-- AOP
+	<!-- AOP -->
 	<advice>
-		<point>org.openmrs.api.PatientService</point>
-		<class>org.openmrs.module.restmodule.advice.RestAdvisor</class>
+		<point>org.openmrs.api.AdministrationService</point>
+		<class>org.openmrs.module.restmodule.advice.RestAdministrationAdvisor</class>
 	</advice>
 	
-	 /AOP -->
+	<!-- /AOP -->
 	
 	
 	<!-- Required Privileges -->

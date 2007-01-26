@@ -24,6 +24,11 @@ import org.openmrs.module.restmodule.RestUtil;
 public class RestServlet extends HttpServlet {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6644606499605233047L;
+
+	/**
 	 * Name for servlet within the servlet mapping (follows "/servletModule/" in
 	 * URL)
 	 */

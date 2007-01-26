@@ -51,7 +51,7 @@ public class PatientResource implements RestResource {
 		case POST:
 		case PUT:
 		case DELETE:
-			response.sendError(response.SC_NOT_IMPLEMENTED);
+			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			return;
 		}
 

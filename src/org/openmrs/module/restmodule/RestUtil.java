@@ -140,7 +140,7 @@ public class RestUtil {
 	/**
 	 * Update global property settings from the database
 	 */
-	private static void updateGlobalProperties() {
+	public static void updateGlobalProperties() {
 		synchronized (lock) {
 			// Update allowed IP list
 			String allowedIpListProperty = Context.getAdministrationService()
