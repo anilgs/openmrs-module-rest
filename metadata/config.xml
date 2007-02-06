@@ -15,8 +15,7 @@
 
 	<activator>org.openmrs.module.restmodule.RestModuleActivator</activator>
 	
-	<!-- <library id="foobar" path="org/openmrs/module/restModule" type="resources" /> -->
-	<updateURL>http://resources.openmrs.org/modules/restModule/update.rdf</updateURL>
+	<updateURL>https://dev.openmrs.org/modules/download/restModule/update.rdf</updateURL>
 	<!-- /Base Module Properties -->
 	
 	
