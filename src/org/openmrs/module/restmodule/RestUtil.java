@@ -18,7 +18,7 @@ public class RestUtil {
 	/**
 	 * Name of the REST module
 	 */
-	public final static String MODULE_NAME = "restModule";
+	public final static String MODULE_NAME = "restmodule";
 
 	/**
 	 * Name of global property containing list of valid client IP addresses

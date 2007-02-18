@@ -11,8 +11,7 @@
 	<!-- **                     TARGETS                           ** -->
 	<!-- *********************************************************** -->
 	<target name="init" description="initialization">
-		<property name="module.name" value="RestModule" />
-		<property name="module.version" value="1.1" />
+		<xmlproperty file="metadata/config.xml" />
 
 		<filterset id="variables.to.replace">
 			<filter token="MODULE_NAME" value="${module.name}" />
@@ -75,6 +74,6 @@
 			<fileset dir="build" includes="**/*" />
 		</jar>
 	</target>
-
+	
 </project>
 
