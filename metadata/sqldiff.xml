@@ -24,4 +24,22 @@
 		</sql>
 	</diff>
 	
+	<diff>
+		<version>1.2.1</version>
+		<author>Burke Mamlin</author>
+		<date>19-Feb-2007</date>
+		<description>
+			Changing all restModule.* global properties to restmodule.*
+		</description>
+		<sql>
+			UPDATE
+				global_property
+			SET
+				property = REPLACE(property, 'restModule.', 'restmodule')
+			WHERE
+				INSTR(property, 'restModule') = 1;
+		</sql>
+	</diff>
+	
+	
 </sqldiff>

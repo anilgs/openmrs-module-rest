@@ -14,8 +14,10 @@
 		<xmlproperty file="metadata/config.xml" />
 
 		<filterset id="variables.to.replace">
+			<filter token="MODULE_ID" value="${module.id}" />
 			<filter token="MODULE_NAME" value="${module.name}" />
 			<filter token="MODULE_VERSION" value="${module.version}" />
+			<filter token="MODULE_PACKAGE" value="${module.package}" />
 		</filterset>
 		
 		<path id="classpath">
