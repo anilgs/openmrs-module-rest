@@ -16,20 +16,20 @@ import org.openmrs.api.context.ContextAuthenticationException;
 public class RestUtil {
 
 	/**
-	 * Name of the REST module
+	 * Identifier for the REST module
 	 */
-	public final static String MODULE_NAME = "restmodule";
+	public final static String MODULE_ID = "restmodule";
 
 	/**
 	 * Name of global property containing list of valid client IP addresses
 	 */
-	public final static String GP_ALLOWED_IP_LIST = MODULE_NAME
+	public final static String GP_ALLOWED_IP_LIST = MODULE_ID
 			+ ".allowed_ip_list";
 
 	/**
 	 * Maximum number of results to return for any single call (0 for unlimited)
 	 */
-	public final static String GP_MAX_RESULTS = MODULE_NAME + ".max_results";
+	public final static String GP_MAX_RESULTS = MODULE_ID + ".max_results";
 
 	/**
 	 * Length of time (in milliseconds) before refreshing global properties
@@ -144,7 +144,7 @@ public class RestUtil {
 		synchronized (lock) {
 			// Update allowed IP list
 			String allowedIpListProperty = Context.getAdministrationService()
-					.getGlobalProperty(GP_ALLOWED_IP_LIST);
+					.getGlobalProperty(GP_ALLOWED_IP_LIST, "");
 			String[] propList = allowedIpListProperty.split("[\\s,]+");
 			allowedIpList = new Vector<String[]>();
 			for (String allowedAddress : propList) {
@@ -152,7 +152,7 @@ public class RestUtil {
 			}
 			// Update max results
 			String maxResultProperty = Context.getAdministrationService()
-					.getGlobalProperty(GP_MAX_RESULTS);
+					.getGlobalProperty(GP_MAX_RESULTS, "0");
 			try {
 				maxResults = Integer.parseInt(maxResultProperty);
 			} catch (NumberFormatException e) {

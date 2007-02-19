@@ -99,8 +99,8 @@ public class RestServlet extends HttpServlet {
 		// Parse the request URL, removing the rest module name along with the
 		// mapping to this servlet
 		String url = request.getRequestURI();
-		int pos = url.indexOf("/" + RestUtil.MODULE_NAME + "/")
-				+ RestUtil.MODULE_NAME.length() + 2;
+		int pos = url.indexOf("/" + RestUtil.MODULE_ID + "/")
+				+ RestUtil.MODULE_ID.length() + 2;
 		String target = url.substring(pos);
 		// Remove "api/" from URL (gets us to this servlet)
 		if (target.startsWith(SERVLET_NAME + "/"))
