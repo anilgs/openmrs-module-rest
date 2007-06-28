@@ -3,9 +3,9 @@ package org.openmrs.module.restmodule;
 import java.text.SimpleDateFormat;
 
 import org.openmrs.Patient;
-import org.openmrs.PatientAddress;
+import org.openmrs.PersonAddress;
 import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientName;
+import org.openmrs.PersonName;
 
 /**
  * Facilitates the encoding and decoding of
@@ -57,7 +57,7 @@ public class XmlPatient {
 		xml.append("</identifierList>");
 
 		xml.append("<name>");
-		PatientName name = patient.getPatientName();
+		PersonName name = patient.getPersonName();
 		addOptionalElement(xml, "prefix", name.getPrefix());
 		addOptionalElement(xml, "givenName", name.getGivenName());
 		addOptionalElement(xml, "middleName", name.getMiddleName());
@@ -67,7 +67,7 @@ public class XmlPatient {
 		xml.append("</name>");
 
 		xml.append("<addressList>");
-		for (PatientAddress address : patient.getAddresses()) {
+		for (PersonAddress address : patient.getAddresses()) {
 			xml.append("<address");
 			if (address.getPreferred())
 				xml.append(" preferred=\"1\">");
