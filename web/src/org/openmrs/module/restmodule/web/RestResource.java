@@ -16,11 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface RestResource {
 
 	// Rest Operations
-	public static final int GET = 1;
-	public static final int POST = 2;
-	public static final int PUT = 3;
-	public static final int DELETE = 4;
-
+        public enum Operation {GET, POST, PUT, DELETE};
+    
 	/**
 	 * Used to pass request to the given resource
 	 * 
@@ -35,7 +32,7 @@ public interface RestResource {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public void handleRequest(int operation, String restRequest,
+	public void handleRequest(Operation operation, String restRequest,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException;
 

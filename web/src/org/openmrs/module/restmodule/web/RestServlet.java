@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.module.restmodule.RestUtil;
+import org.openmrs.module.restmodule.web.RestResource.Operation;
 
 /**
  * Provides a simple RESTful API to the repository. Useful for meeting simple
@@ -46,25 +47,25 @@ public class RestServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		handleRequest(RestResource.GET, request, response);
+		handleRequest(Operation.GET, request, response);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		handleRequest(RestResource.POST, request, response);
+		handleRequest(Operation.POST, request, response);
 	}
 
 	@Override
 	protected void doPut(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		handleRequest(RestResource.PUT, request, response);
+		handleRequest(Operation.PUT, request, response);
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		handleRequest(RestResource.DELETE, request, response);
+		handleRequest(Operation.DELETE, request, response);
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class RestServlet extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	private void handleRequest(int operation, HttpServletRequest request,
+	private void handleRequest(Operation operation, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
 		// Implement BASIC Authentication and restrict by client IP address
@@ -92,7 +93,7 @@ public class RestServlet extends HttpServlet {
 			// Not allowed
 			response.setHeader("WWW-Authenticate",
 					"BASIC realm=\"OpenMRS Rest API\"");
-			response.sendError(response.SC_UNAUTHORIZED);
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 
@@ -116,14 +117,14 @@ public class RestServlet extends HttpServlet {
 					resources.get(resourceName).handleRequest(operation,
 							restRequest, request, response);
 				} catch (APIAuthenticationException e) {
-					response.sendError(response.SC_FORBIDDEN);
+					response.sendError(HttpServletResponse.SC_FORBIDDEN);
 				}
 				return;
 			}
 		}
 		
 		// If no matching resources were found, return an error
-		response.sendError(response.SC_BAD_REQUEST);
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
 	}
 

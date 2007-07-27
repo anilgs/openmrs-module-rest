@@ -24,7 +24,7 @@ public class FindPatientResource implements RestResource {
 	/**
 	 * Handle all requests to this patient search resource
 	 */
-	public void handleRequest(int operation, String restRequest,
+	public void handleRequest(Operation operation, String restRequest,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
