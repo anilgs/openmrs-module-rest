@@ -2,7 +2,7 @@ package org.openmrs.module.restmodule.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class PatientResource implements RestResource {
 		switch (operation) {
 
 		case GET:
-			Set<Patient> patientList = Context.getPatientService()
+			Collection<Patient> patientList = Context.getPatientService()
 					.getPatientsByIdentifier(restRequest, false);
 
 			out.print("<patientList>");

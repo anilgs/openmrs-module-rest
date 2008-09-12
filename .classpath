@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/catalina.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/spring-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/openmrs-api-1.1.10.1943.jar"/>
-	<classpathentry kind="lib" path="lib/web-openmrs-api-1.1.10.1943.jar"/>
+	<classpathentry kind="lib" path="lib/openmrs-api-1.3.0.14.4802.jar"/>
+	<classpathentry kind="lib" path="lib/web-openmrs-api-1.3.0.14.4802.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
