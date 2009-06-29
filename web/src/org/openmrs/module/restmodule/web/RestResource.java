@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Represents a RESTful resource (e.g., patient) that can be accessed through
  * RESTful calls
- * 
- * @author Burke Mamlin
- * @version 1.0
  */
 public interface RestResource {
 

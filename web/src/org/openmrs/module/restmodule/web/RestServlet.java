@@ -18,9 +18,6 @@ import org.openmrs.module.restmodule.web.RestResource.Operation;
  * data needs over HTTP. Authentication is performed using HTTP BASIC
  * Authentication. Global properties are used to restrict access by client IP
  * address and to set a maximum number of results to be returned.
- * 
- * @author Burke Mamlin
- * @version 1.0
  */
 public class RestServlet extends HttpServlet {
 

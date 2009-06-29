@@ -3,17 +3,14 @@ package org.openmrs.module.restmodule;
 import java.text.SimpleDateFormat;
 
 import org.openmrs.Patient;
-import org.openmrs.PersonAddress;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 
 /**
  * Facilitates the encoding and decoding of
  * <code>org.openmrs.Patient</org> objects to/from
  * XML.
- * 
- * @author Burke Mamlin
- * @version 1.0
  */
 public class XmlPatient {
 

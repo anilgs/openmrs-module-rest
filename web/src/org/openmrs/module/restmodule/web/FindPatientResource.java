@@ -15,9 +15,6 @@ import org.openmrs.module.restmodule.XmlPatient;
 
 /**
  * Provides RESTful access to the patient search facilities of OpenMRS
- * 
- * @author Burke Mamlin
- * @version 1.0
  */
 public class FindPatientResource implements RestResource {
 

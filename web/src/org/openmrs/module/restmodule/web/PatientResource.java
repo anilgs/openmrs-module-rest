@@ -15,9 +15,6 @@ import org.openmrs.module.restmodule.XmlPatient;
 
 /**
  * Provides a simple RESTful access to patients
- *  
- * @author Burke Mamlin
- * @version 1.0
  */
 public class PatientResource implements RestResource {
 

@@ -9,9 +9,6 @@ import org.openmrs.api.context.ContextAuthenticationException;
 
 /**
  * Utility class for miscellaneous convenience functions used by the REST API
- * 
- * @author Burke Mamlin
- * @version 1.0
  */
 public class RestUtil {
 

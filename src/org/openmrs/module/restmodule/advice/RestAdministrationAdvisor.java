@@ -7,9 +7,6 @@ import org.springframework.aop.AfterReturningAdvice;
 
 /**
  * This class is intended to wrap around the org.openmrs.api.AdministrationService.
- * 
- * @author Ben Wolfe
- * @version 1.0
  */
 public class RestAdministrationAdvisor implements AfterReturningAdvice {
 
