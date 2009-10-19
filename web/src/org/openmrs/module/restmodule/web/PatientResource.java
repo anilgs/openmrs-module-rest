@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.restmodule.JsonPatient;
 import org.openmrs.module.restmodule.RestUtil;
 import org.openmrs.module.restmodule.XmlPatient;
 
@@ -21,7 +22,7 @@ public class PatientResource implements RestResource {
 	/**
 	 * Handle all requests to this resource
 	 */
-	public void handleRequest(Operation operation, String restRequest,
+	public void handleRequest(Operation operation, OutputType outputType, String restRequest,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -32,17 +33,9 @@ public class PatientResource implements RestResource {
 		case GET:
 			Collection<Patient> patientList = Context.getPatientService()
 					.getPatientsByIdentifier(restRequest, false);
-
-			out.print("<patientList>");
-			int i = 0;
-			int max = RestUtil.getMaxResults();
-			for (Patient patient : patientList) {
-				out.print(XmlPatient.encode(patient));
-				i++;
-				if (max > 0 && i >= max)
-					break; // if max set, abort before exceeding
-			}
-			out.print("</patientList>");
+			
+			printPatientList(out, outputType, patientList);
+			
 			break;
 
 		case POST:
@@ -53,5 +46,38 @@ public class PatientResource implements RestResource {
 		}
 
 	}
-
+	
+	/**
+	 * Auto generated method comment
+	 * 
+	 * @param out
+	 * @param outputType
+	 * @param patientList
+	 */
+	public static void printPatientList(PrintWriter out, OutputType outputType, Collection<Patient> patientList) {
+		if (outputType == OutputType.XML) {
+			out.print("<patientList>");
+			int i = 0;
+			int max = RestUtil.getMaxResults();
+			for (Patient patient : patientList) {
+				out.print(XmlPatient.encode(patient));
+				i++;
+				if (max > 0 && i >= max)
+					break; // if max set, abort before exceeding
+			}
+			out.print("</patientList>");
+		}
+		else if (outputType == OutputType.JSON) {
+			out.print("[");
+			int i = 0;
+			int max = RestUtil.getMaxResults();
+			for (Patient patient : patientList) {
+				out.print(JsonPatient.encode(patient));
+				i++;
+				if (max > 0 && i >= max)
+					break; // if max set, abort before exceeding
+			}
+			out.print("]");
+		}
+	}
 }

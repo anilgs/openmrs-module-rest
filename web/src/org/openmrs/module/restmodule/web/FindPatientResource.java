@@ -21,7 +21,7 @@ public class FindPatientResource implements RestResource {
 	/**
 	 * Handle all requests to this patient search resource
 	 */
-	public void handleRequest(Operation operation, String restRequest,
+	public void handleRequest(Operation operation, OutputType outputType, String restRequest,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -33,16 +33,8 @@ public class FindPatientResource implements RestResource {
 			List<Patient> patientList = Context.getPatientService()
 					.findPatients(restRequest, false);
 
-			out.print("<patientList>");
-			int i = 0;
-			int max = RestUtil.getMaxResults();
-			for (Patient patient : patientList) {
-				out.print(XmlPatient.encode(patient));
-				i++;
-				if (max > 0 && i >= max)
-					break; // if max set, abort before exceeding
-			}
-			out.print("</patientList>");
+			PatientResource.printPatientList(out, outputType, patientList);
+			
 			break;
 
 		case POST:

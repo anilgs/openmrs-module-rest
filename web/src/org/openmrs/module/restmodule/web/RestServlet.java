@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.module.restmodule.RestUtil;
 import org.openmrs.module.restmodule.web.RestResource.Operation;
+import org.openmrs.module.restmodule.web.RestResource.OutputType;
 
 /**
  * Provides a simple RESTful API to the repository. Useful for meeting simple
@@ -31,6 +32,7 @@ public class RestServlet extends HttpServlet {
 	 * URL)
 	 */
 	public static final String SERVLET_NAME = "api";
+	public static final String SERVLET_NAME_JSON = "json";
 
 	/**
 	 * Internally held list of resources. Currently hardcoded.
@@ -93,16 +95,25 @@ public class RestServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
-
+		
 		// Parse the request URL, removing the rest module name along with the
 		// mapping to this servlet
 		String url = request.getRequestURI();
 		int pos = url.indexOf("/" + RestUtil.MODULE_ID + "/")
 				+ RestUtil.MODULE_ID.length() + 2;
 		String target = url.substring(pos);
+		
+		OutputType outputType = null;
+		
 		// Remove "api/" from URL (gets us to this servlet)
-		if (target.startsWith(SERVLET_NAME + "/"))
+		if (target.startsWith(SERVLET_NAME + "/")) {
 			target = target.substring(4);
+			outputType = OutputType.XML;
+		}
+		else if (target.startsWith(SERVLET_NAME_JSON + "/")) {
+			target = target.substring(5);
+			outputType = OutputType.JSON;
+		}
 
 		// If we have a matching resource, let it handle the request
 		for (String resourceName : resources.keySet()) {
@@ -111,7 +122,7 @@ public class RestServlet extends HttpServlet {
 				String restRequest = URLDecoder.decode(target
 						.substring(resourceName.length() + 1), "UTF-8");
 				try {
-					resources.get(resourceName).handleRequest(operation,
+					resources.get(resourceName).handleRequest(operation, outputType,
 							restRequest, request, response);
 				} catch (APIAuthenticationException e) {
 					response.sendError(HttpServletResponse.SC_FORBIDDEN);
