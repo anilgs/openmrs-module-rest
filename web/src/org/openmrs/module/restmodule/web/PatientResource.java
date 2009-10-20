@@ -72,6 +72,8 @@ public class PatientResource implements RestResource {
 			int i = 0;
 			int max = RestUtil.getMaxResults();
 			for (Patient patient : patientList) {
+				if (i != 0)
+					out.print(",");
 				out.print(JsonPatient.encode(patient));
 				i++;
 				if (max > 0 && i >= max)

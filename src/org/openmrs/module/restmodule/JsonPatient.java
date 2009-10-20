@@ -34,14 +34,18 @@ public class JsonPatient {
 		json.append("\"gender\":\"").append(patient.getGender()).append("\",");
 		
 		json.append("\"identifierList\":[");
+		boolean first = true;
 		for (PatientIdentifier pid : patient.getIdentifiers()) {
+			if (!first)
+				json.append(",");
 			json.append("{");
 			if (pid.isPreferred())
 				json.append("\"preferred\":\"1\",");
 			json.append("\"type\":\"").append(pid.getIdentifierType().getName()).append("\",");
 			// TODO: should encode invalid chars in name
 			json.append("\"identifier\":\"").append(pid.getIdentifier()).append("\"");
-			json.append("},");
+			json.append("}");
+			first = false;
 		}
 		json.append("],");
 		
@@ -53,10 +57,14 @@ public class JsonPatient {
 		addOptionalElement(json, "familyName", name.getFamilyName());
 		addOptionalElement(json, "familyName2", name.getFamilyName2());
 		addOptionalElement(json, "degree", name.getDegree());
+		json.deleteCharAt(json.length()-1); // delete last comma
 		json.append("},");
 		
 		json.append("\"addressList\":[");
+		first = true;
 		for (PersonAddress address : patient.getAddresses()) {
+			if (!first)
+				json.append(",");
 			json.append("{");
 			if (address.getPreferred())
 				json.append("\"preferred\":\"1\",");
@@ -66,7 +74,9 @@ public class JsonPatient {
 			addOptionalElement(json, "countyDistrict", address.getCountyDistrict());
 			addOptionalElement(json, "stateProvince", address.getStateProvince());
 			addOptionalElement(json, "country", address.getCountry());
-			json.append("},");
+			json.deleteCharAt(json.length()-1); // delete last comma
+			json.append("}");
+			first = false;
 		}
 		json.append("]");
 		
