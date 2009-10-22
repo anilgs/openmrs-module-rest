@@ -6,6 +6,7 @@ import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
+import org.openmrs.web.WebUtil;
 
 /**
  * Facilitates the encoding of <code>org.openmrs.Patient</org> objects to/from JSON
@@ -31,7 +32,7 @@ public class JsonPatient {
 		addOptionalElement(json, "birthdate", dateFormatter.format(patient.getBirthdate()));
 		
 		json.append("\"birthdateEstimated\":\"").append(patient.getBirthdateEstimated()).append("\",");
-		json.append("\"gender\":\"").append(patient.getGender()).append("\",");
+		json.append("\"gender\":\"").append(WebUtil.escapeQuotes(patient.getGender())).append("\",");
 		
 		json.append("\"identifierList\":[");
 		boolean first = true;
@@ -41,9 +42,9 @@ public class JsonPatient {
 			json.append("{");
 			if (pid.isPreferred())
 				json.append("\"preferred\":\"1\",");
-			json.append("\"type\":\"").append(pid.getIdentifierType().getName()).append("\",");
+			json.append("\"type\":\"").append(WebUtil.escapeQuotes(pid.getIdentifierType().getName())).append("\",");
 			// TODO: should encode invalid chars in name
-			json.append("\"identifier\":\"").append(pid.getIdentifier()).append("\"");
+			json.append("\"identifier\":\"").append(WebUtil.escapeQuotes(pid.getIdentifier())).append("\"");
 			json.append("}");
 			first = false;
 		}
@@ -51,13 +52,15 @@ public class JsonPatient {
 		
 		json.append("\"name\":{");
 		PersonName name = patient.getPersonName();
-		addOptionalElement(json, "prefix", name.getPrefix());
-		addOptionalElement(json, "givenName", name.getGivenName());
-		addOptionalElement(json, "middleName", name.getMiddleName());
-		addOptionalElement(json, "familyName", name.getFamilyName());
-		addOptionalElement(json, "familyName2", name.getFamilyName2());
-		addOptionalElement(json, "degree", name.getDegree());
-		json.deleteCharAt(json.length()-1); // delete last comma
+		boolean hasContent = addOptionalElement(json, "prefix", name.getPrefix());
+		hasContent |= addOptionalElement(json, "givenName", name.getGivenName());
+		hasContent |= addOptionalElement(json, "middleName", name.getMiddleName());
+		hasContent |= addOptionalElement(json, "familyName", name.getFamilyName());
+		hasContent |= addOptionalElement(json, "familyName2", name.getFamilyName2());
+		hasContent |= addOptionalElement(json, "familyNameSuffix", name.getFamilyNameSuffix());
+		hasContent |= addOptionalElement(json, "degree", name.getDegree());
+		if (hasContent)
+			json.deleteCharAt(json.length()-1); // delete last comma if at least something was added
 		json.append("},");
 		
 		json.append("\"addressList\":[");
@@ -68,13 +71,19 @@ public class JsonPatient {
 			json.append("{");
 			if (address.getPreferred())
 				json.append("\"preferred\":\"1\",");
-			addOptionalElement(json, "address1", address.getAddress1());
-			addOptionalElement(json, "address2", address.getAddress2());
-			addOptionalElement(json, "cityVillage", address.getCityVillage());
-			addOptionalElement(json, "countyDistrict", address.getCountyDistrict());
-			addOptionalElement(json, "stateProvince", address.getStateProvince());
-			addOptionalElement(json, "country", address.getCountry());
-			json.deleteCharAt(json.length()-1); // delete last comma
+			hasContent = addOptionalElement(json, "address1", address.getAddress1());
+			hasContent |= addOptionalElement(json, "address2", address.getAddress2());
+			hasContent |= addOptionalElement(json, "cityVillage", address.getCityVillage());
+			hasContent |= addOptionalElement(json, "neighborhoodCell", address.getNeighborhoodCell());
+			hasContent |= addOptionalElement(json, "region", address.getRegion());
+			hasContent |= addOptionalElement(json, "subregion", address.getSubregion());
+			hasContent |= addOptionalElement(json, "countyDistrict", address.getCountyDistrict());
+			hasContent |= addOptionalElement(json, "stateProvince", address.getStateProvince());
+			hasContent |= addOptionalElement(json, "country", address.getCountry());
+			
+			if (hasContent)
+				json.deleteCharAt(json.length()-1); // delete last comma if at least something was added
+			
 			json.append("}");
 			first = false;
 		}
@@ -91,15 +100,19 @@ public class JsonPatient {
 	 * @param json buffer for output
 	 * @param attrName name of element
 	 * @param value the value for the element. if null, then nothing is added to the output buffer
+	 * @return true if an element was added
 	 */
-	private static void addOptionalElement(StringBuffer json, String attrName, String value) {
+	private static boolean addOptionalElement(StringBuffer json, String attrName, String value) {
 		if (value == null || "".equals(value))
-			return;
+			return false;
+		
 		json.append("\"");
 		json.append(attrName);
 		json.append("\":\"");
-		json.append(value);
+		json.append(WebUtil.escapeQuotes(value));
 		json.append("\",");
+		
+		return true;
 	}
 	
 	/**

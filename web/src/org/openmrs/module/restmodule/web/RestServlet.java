@@ -109,16 +109,17 @@ public class RestServlet extends HttpServlet {
 		if (target.startsWith(SERVLET_NAME + "/")) {
 			target = target.substring(4);
 			outputType = OutputType.XML;
+			response.setHeader("Content-type", "text/xml");
 		}
 		else if (target.startsWith(SERVLET_NAME_JSON + "/")) {
 			target = target.substring(5);
 			outputType = OutputType.JSON;
+			response.setHeader("Content-type", "application/json");
 		}
 
 		// If we have a matching resource, let it handle the request
 		for (String resourceName : resources.keySet()) {
 			if (target.startsWith(resourceName + "/")) {
-				response.setHeader("Content-type", "text/xml");
 				String restRequest = URLDecoder.decode(target
 						.substring(resourceName.length() + 1), "UTF-8");
 				try {
