@@ -56,7 +56,8 @@ public class PatientResource implements RestResource {
 	 */
 	public static void printPatientList(PrintWriter out, OutputType outputType, Collection<Patient> patientList) {
 		if (outputType == OutputType.XML) {
-			out.print("<patientList>");
+			out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			out.print("<patientList version=\""+RestServlet.patientListXmlVersion+"\">");			
 			int i = 0;
 			int max = RestUtil.getMaxResults();
 			for (Patient patient : patientList) {

@@ -20,8 +20,11 @@
 			<filter token="MODULE_PACKAGE" value="${module.package}" />
 		</filterset>
 		
-		<path id="classpath">
+		<path id="classpath">			
 			<fileset dir="lib">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="lib-common">
 				<include name="**/*.jar"/>
 			</fileset>
 		</path>
@@ -69,6 +72,11 @@
 		<copy todir="build/web/module/">
 			<fileset dir="web/module/" includes="**/*" />
 			<filterset refid="variables.to.replace" />
+		</copy>
+		
+		<!-- Copy only the module specific jars -->
+		<copy todir="build/lib">
+			<fileset dir="lib" includes="**/*" />		
 		</copy>
 		
 		<!-- Create distributable jar file -->
