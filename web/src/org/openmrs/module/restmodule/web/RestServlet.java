@@ -3,15 +3,12 @@ package org.openmrs.module.restmodule.web;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Hashtable;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.module.restmodule.RestUtil;
 import org.openmrs.module.restmodule.web.RestResource.Operation;
@@ -31,18 +28,13 @@ public class RestServlet extends HttpServlet {
 	private static final long serialVersionUID = -6644606499605233047L;
 
 	/**
-	 * Logger for this class
-	 */
-	private static final Log log = LogFactory.getLog(RestServlet.class);
-
-	/**
 	 * Name for servlet within the servlet mapping (follows "/servletModule/" in
 	 * URL)
 	 */
 	public static final String SERVLET_NAME = "api";
 	public static final String SERVLET_NAME_JSON = "json";
-	public static double obsListXmlVersion;
-	public static double patientListXmlVersion;
+	public static final double OBS_LIST_XML_VERSION = 1.0;
+	public static final double PATIENT_LIST_XML_VERSION = 1.0;
 	/**
 	 * Internally held list of resources. Currently hardcoded.
 	 */
@@ -160,33 +152,6 @@ public class RestServlet extends HttpServlet {
 		// If no matching resources were found, return an error
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
-	}
-
-	/**
-	 * @see javax.servlet.GenericServlet#init()
-	 */
-	public void init() throws ServletException {
-		super.init();
-		log.debug("Loading rest module properties......");
-		Properties props = new Properties();
-		try {
-			props.load(RestServlet.class.getClassLoader().getResourceAsStream(
-					"web/module/resources/rest_module.properties"));
-			obsListXmlVersion = Double.parseDouble(props.getProperty(
-					"obsList.xml.version", "1.0"));
-			patientListXmlVersion = Double.parseDouble(props.getProperty(
-					"patientList.xml.version", "1.0"));
-		} catch (NumberFormatException e) {
-
-			log
-					.error("Invalid value for the obsList or patientList xml output version in the file 'rest_module.properties");
-
-		} catch (IOException e) {
-
-			log
-					.error("An error occured while trying to load the properties for the rest module");
-
-		}
 	}
 
 }

@@ -100,7 +100,7 @@ public class ObsResource implements RestResource {
 			Collection<Obs> obsList) {
 		if (outputType == OutputType.XML) {
 			out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			out.print("<obsList version=\"" + RestServlet.obsListXmlVersion
+			out.print("<obsList version=\"" + RestServlet.OBS_LIST_XML_VERSION
 					+ "\">");
 			int i = 0;
 			int max = RestUtil.getMaxResults();

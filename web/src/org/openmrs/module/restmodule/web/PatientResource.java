@@ -22,9 +22,9 @@ public class PatientResource implements RestResource {
 	/**
 	 * Handle all requests to this resource
 	 */
-	public void handleRequest(Operation operation, OutputType outputType, String restRequest,
-			HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void handleRequest(Operation operation, OutputType outputType,
+			String restRequest, HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
 
@@ -33,9 +33,9 @@ public class PatientResource implements RestResource {
 		case GET:
 			Collection<Patient> patientList = Context.getPatientService()
 					.getPatientsByIdentifier(restRequest, false);
-			
+
 			printPatientList(out, outputType, patientList);
-			
+
 			break;
 
 		case POST:
@@ -46,7 +46,7 @@ public class PatientResource implements RestResource {
 		}
 
 	}
-	
+
 	/**
 	 * Auto generated method comment
 	 * 
@@ -54,10 +54,12 @@ public class PatientResource implements RestResource {
 	 * @param outputType
 	 * @param patientList
 	 */
-	public static void printPatientList(PrintWriter out, OutputType outputType, Collection<Patient> patientList) {
+	public static void printPatientList(PrintWriter out, OutputType outputType,
+			Collection<Patient> patientList) {
 		if (outputType == OutputType.XML) {
 			out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			out.print("<patientList version=\""+RestServlet.patientListXmlVersion+"\">");			
+			out.print("<patientList version=\""
+					+ RestServlet.PATIENT_LIST_XML_VERSION + "\">");
 			int i = 0;
 			int max = RestUtil.getMaxResults();
 			for (Patient patient : patientList) {
@@ -67,8 +69,7 @@ public class PatientResource implements RestResource {
 					break; // if max set, abort before exceeding
 			}
 			out.print("</patientList>");
-		}
-		else if (outputType == OutputType.JSON) {
+		} else if (outputType == OutputType.JSON) {
 			out.print("[");
 			int i = 0;
 			int max = RestUtil.getMaxResults();
