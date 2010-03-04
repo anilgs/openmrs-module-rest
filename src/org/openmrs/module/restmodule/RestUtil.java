@@ -63,8 +63,14 @@ public class RestUtil {
 
 		String[] userpassDecoded = new String(Base64.decode(userpassEncoded))
 				.split(":");
+		//user left the both username and password fields empty or just password field
+		//This does not catch the situation where only username field is empty
+		if(userpassDecoded.length < 2)
+			return false;
+		
 		String username = userpassDecoded[0];
 		String password = userpassDecoded[1];
+		
 		try {
 			Context.authenticate(username, password);
 		} catch (ContextAuthenticationException e) {
