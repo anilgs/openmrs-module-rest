@@ -43,6 +43,7 @@ public class RestServlet extends HttpServlet {
 		resources.put("patient", new PatientResource());
 		resources.put("findPatient", new FindPatientResource());
 		resources.put("obs", new ObsResource());
+		resources.put("hl7message", new HL7MessageResource()); 		
 	}
 
 	@Override
