@@ -5,7 +5,7 @@
 	<!-- Base Module Properties -->
 	<id>restmodule</id>
 	<name>REST Module</name>
-	<version>1.4</version>
+	<version>1.4.1</version>
 	<package>org.openmrs.module.@MODULE_ID@</package>
 	<author>Burke Mamlin</author>
 	<description>
