@@ -40,7 +40,7 @@ public class XmlPatient {
 		xml.append("\">");
 
 		xml.append("<identifierList>");
-		for (PatientIdentifier pid : patient.getIdentifiers()) {
+		for (PatientIdentifier pid : patient.getActiveIdentifiers()) {
 			xml.append("<identifier");
 			if (pid.isPreferred())
 				xml.append(" preferred=\"1\"");

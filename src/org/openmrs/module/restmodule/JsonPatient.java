@@ -36,7 +36,7 @@ public class JsonPatient {
 		
 		json.append("\"identifierList\":[");
 		boolean first = true;
-		for (PatientIdentifier pid : patient.getIdentifiers()) {
+		for (PatientIdentifier pid : patient.getActiveIdentifiers()) {
 			if (!first)
 				json.append(",");
 			json.append("{");
