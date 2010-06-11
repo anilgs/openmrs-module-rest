@@ -29,9 +29,10 @@ public class JsonPatient {
 		
 		json.append("{");
 		
-		addOptionalElement(json, "birthdate", dateFormatter.format(patient.getBirthdate()));
-		
-		json.append("\"birthdateEstimated\":\"").append(patient.getBirthdateEstimated()).append("\",");
+		if (patient.getBirthdate() != null) {
+			addOptionalElement(json, "birthdate", dateFormatter.format(patient.getBirthdate()));
+			json.append("\"birthdateEstimated\":\"").append(patient.getBirthdateEstimated()).append("\",");
+		}
 		json.append("\"gender\":\"").append(WebUtil.escapeQuotes(patient.getGender())).append("\",");
 		
 		json.append("\"identifierList\":[");
