@@ -47,7 +47,6 @@ public class XmlObs {
 				+ ((obs.getObsDatetime() != null) ? " obsDatetime=\""
 						+ dateFormatter.format(obs.getObsDatetime()) + "\""
 						: "")
-				+ "\""
 				+ ((obs.getAccessionNumber() != null) ? " accessionNumber=\""
 						+ obs.getAccessionNumber() + "\"" : "")
 				+ " isObsGrouping=\"" + obs.isObsGrouping() + "\""
