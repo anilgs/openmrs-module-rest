@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openmrs.Obs;
 import org.openmrs.web.WebUtil;
+import org.springframework.util.StringUtils;
 
 /**
  * 
@@ -38,64 +39,77 @@ public class JsonObs {
 
 		json.put("uuid", obs.getUuid());
 		json.put("patientId", obs.getPersonId());
-		json.put("obsDatetime", dateFormatter.format(obs.getObsDatetime()));
-		json.putOpt("accessionNumber", obs.getAccessionNumber());
+
+		if (obs.getObsDatetime() != null)
+			json.put("obsDatetime", dateFormatter.format(obs.getObsDatetime()));
+		addNonEmptyStringAsProperty(json, "accessionNumber", obs
+				.getAccessionNumber());
 		json.put("isObsGrouping", obs.isObsGrouping());
 		json.put("isComplex", obs.isComplex());
 		json.putOpt("valueNumeric", obs.getValueNumeric());
-		json.putOpt("valueText", obs.getValueText());
-		json.putOpt("valueComplex", obs.getValueComplex());
-		json.putOpt("valueModifier", obs.getValueModifier());
+		addNonEmptyStringAsProperty(json, "valueText", obs.getValueText());
+		addNonEmptyStringAsProperty(json, "valueComplex", obs.getValueComplex());
+		addNonEmptyStringAsProperty(json, "valueModifier", obs
+				.getValueModifier());
 		json.putOpt("valueGroupId", obs.getValueGroupId());
-		json.putOpt("dateStarted", obs.getDateStarted());
-		json.putOpt("dateStopped", obs.getDateStopped());
+
+		if (obs.getDateStarted() != null)
+			json.put("dateStarted", dateFormatter.format(obs.getDateStarted()));
+		if (obs.getDateStopped() != null)
+			json.put("dateStopped", dateFormatter.format(obs.getDateStopped()));
 
 		// first convert this concept to a json object
 		jsonTemp = new JSONObject();
 		jsonTemp.put("id", obs.getConcept().getConceptId());
-		jsonTemp.putOpt("name", obs.getConcept().getDisplayString());
-		// Now we are ready to add the converted concept object to the main json
-		// object
+		addNonEmptyStringAsProperty(jsonTemp, "name", obs.getConcept()
+				.getDisplayString());
+
+		// add the converted concept object to the main json object
 		json.put("concept", jsonTemp);
 
 		if (obs.getEncounter() != null) {
 			jsonTemp = new JSONObject();// refresh
 			jsonTemp.put("id", obs.getEncounter().getEncounterId());
 			if (obs.getEncounter().getEncounterType() != null)
-				jsonTemp.putOpt("type", obs.getEncounter().getEncounterType()
-						.getName());
+				addNonEmptyStringAsProperty(jsonTemp, "type", obs
+						.getEncounter().getEncounterType().getName());
 			json.put("encounter", jsonTemp);
 		}
 
 		if (obs.getValueCoded() != null) {
 			jsonTemp = new JSONObject();
 			jsonTemp.put("id", obs.getValueCoded().getConceptId());
-			jsonTemp.putOpt("name", obs.getValueCoded().getDisplayString());
+			addNonEmptyStringAsProperty(jsonTemp, "name", obs.getValueCoded()
+					.getDisplayString());
 			json.put("valueCoded", jsonTemp);
 		}
 
 		if (obs.getValueCodedName() != null) {
 			jsonTemp = new JSONObject();
 			jsonTemp.put("id", obs.getValueCodedName().getConceptNameId());
-			jsonTemp.putOpt("name", obs.getValueCodedName().getName());
+			addNonEmptyStringAsProperty(jsonTemp, "name", obs
+					.getValueCodedName().getName());
 			json.put("valueCodedName", jsonTemp);
 		}
 
 		if (obs.getValueDrug() != null) {
 			jsonTemp = new JSONObject();
 			jsonTemp.put("id", obs.getValueDrug().getDrugId());
-			jsonTemp.putOpt("name", obs.getValueDrug().getName());
+			addNonEmptyStringAsProperty(jsonTemp, "name", obs.getValueDrug()
+					.getName());
 			json.put("valueDrug", jsonTemp);
 		}
 
 		if (obs.getOrder() != null) {
 			jsonTemp = new JSONObject();
 			jsonTemp.put("id", obs.getOrder().getOrderId());
-			jsonTemp.putOpt("instructions", obs.getOrder().getInstructions());
+			addNonEmptyStringAsProperty(jsonTemp, "instructions", obs
+					.getOrder().getInstructions());
 			json.put("order", jsonTemp);
 		}
 
-		json.put("comment", WebUtil.escapeQuotes(obs.getComment()));
+		addNonEmptyStringAsProperty(json, "comment", WebUtil.escapeQuotes(obs
+				.getComment()));
 
 		if (obs.getLocation() != null) {
 			jsonTemp = new JSONObject();
@@ -164,8 +178,7 @@ public class JsonObs {
 			String key, String stringToAdd) {
 
 		// donot add the property if the key or value is null or empty
-		if (key == null || stringToAdd == null || key.equals("")
-				|| stringToAdd.equals(""))
+		if (!StringUtils.hasText(key) || !StringUtils.hasText(stringToAdd))
 			return;
 
 		jObject.put(key, stringToAdd);

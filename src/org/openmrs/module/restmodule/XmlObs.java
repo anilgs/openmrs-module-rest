@@ -11,6 +11,7 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Order;
 import org.openmrs.web.WebUtil;
+import org.springframework.util.StringUtils;
 
 /**
  * Facilitates the encoding and decoding of
@@ -39,24 +40,26 @@ public class XmlObs {
 
 		xml.append("<obs uuid=\""
 				+ obs.getUuid()
-				+ "\" "
-				+ "patientId=\""
+				+ "\""
+				+ " patientId=\""
 				+ obs.getPersonId()
-				+ "\" "
-				+ "obsDatetime=\""
-				+ dateFormatter.format(obs.getObsDatetime())
-				+ "\" "
-				+ ((obs.getAccessionNumber() != null) ? "accessionNumber=\""
-						+ obs.getAccessionNumber() + "\" " : "")
-				+ "isObsGrouping=\"" + obs.isObsGrouping() + "\" "
-				+ "isComplex=\"" + obs.isComplex() + "\">");
+				+ "\""
+				+ ((obs.getObsDatetime() != null) ? " obsDatetime=\""
+						+ dateFormatter.format(obs.getObsDatetime()) + "\""
+						: "")
+				+ "\""
+				+ ((obs.getAccessionNumber() != null) ? " accessionNumber=\""
+						+ obs.getAccessionNumber() + "\"" : "")
+				+ " isObsGrouping=\"" + obs.isObsGrouping() + "\""
+				+ " isComplex=\"" + obs.isComplex() + "\">");
 
 		Concept concept = obs.getConcept();
 		addOptionalElementWithIdAttribute(xml, "concept", concept
 				.getConceptId().toString(), concept.getDisplayString());
 
-		addOptionalElement(xml, "valueNumeric", obs.getValueNumeric()
-				.toString());
+		addOptionalElement(xml, "valueNumeric",
+				(obs.getValueNumeric() != null) ? obs.getValueNumeric()
+						.toString() : "");
 		addOptionalElement(xml, "valueText", obs.getValueText());
 		addOptionalElement(xml, "valueComplex", obs.getValueComplex());
 		addOptionalElement(xml, "valueModifier", obs.getValueModifier());
@@ -157,8 +160,9 @@ public class XmlObs {
 	 */
 	private static void addOptionalElement(StringBuffer xml, String tag,
 			String value) {
-		if (value == null || value.equals(""))
+		if (!StringUtils.hasText(value))
 			return;
+
 		xml.append("<");
 		xml.append(tag);
 		xml.append(">");
@@ -187,11 +191,18 @@ public class XmlObs {
 
 		xml.append("<");
 		xml.append(tag);
-		xml.append(" id=\"" + attribValue + "\">");
-		xml.append((value == null) ? "" : value);
-		xml.append("</");
-		xml.append(tag);
-		xml.append(">");
+		xml.append(" id=\"" + attribValue + "\"");
+		// print a shortened form of a tag
+		if (!StringUtils.hasText(value))
+			xml.append(" />");
+		// print the opening and closing tags
+		else {
+			xml.append(">");
+			xml.append(value);
+			xml.append("</");
+			xml.append(tag);
+			xml.append(">");
+		}
 	}
 
 	/**
