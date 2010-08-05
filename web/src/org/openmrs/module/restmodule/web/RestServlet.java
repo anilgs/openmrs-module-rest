@@ -123,18 +123,7 @@ public class RestServlet extends HttpServlet {
 		for (String resourceName : resources.keySet()) {
 			if (target.startsWith(resourceName + "/")
 					|| target.startsWith(resourceName)) {
-				// if request url is meant to have a queryString but malformed
-				// e.g
-				// http://localhost:8080/openmrs/moduleServlet/restmodule/json/obs?
-				// This is aimed at avoiding an out of range/bound error on the
-				// statement after this 'if' block
-				if (!target.startsWith(resourceName + "/")
-						&& (request.getQueryString() == null || request
-								.getQueryString().equals(""))) {
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					return;
-				}
-
+				
 				String restRequest = URLDecoder.decode(target
 						.substring(resourceName.length()
 								+ (target.startsWith(resourceName + "/") ? 1
