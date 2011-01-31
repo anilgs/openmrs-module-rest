@@ -43,7 +43,8 @@ public class RestServlet extends HttpServlet {
 		resources.put("patient", new PatientResource());
 		resources.put("findPatient", new FindPatientResource());
 		resources.put("obs", new ObsResource());
-		resources.put("hl7", new HL7MessageResource()); 		
+		resources.put("hl7", new HL7MessageResource()); 
+		resources.put("user", new UserResource()); 
 	}
 
 	@Override
@@ -90,9 +91,9 @@ public class RestServlet extends HttpServlet {
 		// Implement BASIC Authentication and restrict by client IP address
 		String auth = request.getHeader("Authorization");
 		String remoteAddress = request.getRemoteAddr();
-		if (!RestUtil.allowUser(auth)
-				|| !RestUtil.allowRemoteAddress(remoteAddress)) {
-			// Not allowed
+		if (!RestUtil.allowUser(auth)|| !RestUtil.allowRemoteAddress(remoteAddress)
+				) {
+			// Not allowed 
 			response.setHeader("WWW-Authenticate",
 					"BASIC realm=\"OpenMRS Rest API\"");
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
