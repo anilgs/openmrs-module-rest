@@ -13,110 +13,102 @@
  */
 package org.openmrs.module.restmodule;
 
-import org.openmrs.Patient;
+import java.text.SimpleDateFormat;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.openmrs.Person;
+import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.web.WebUtil;
 
 /**
- *
+ * Facilitates the encoding of <code>org.openmrs.User</org> objects to/from JSON
  */
 public class JsonUser {
+	
+	/**
+	 * All dates are reported in YYYY-MM-DD format
+	 */
+	private static SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+	
 	/**
 	 * Convert a user object into JSON
 	 * 
-	 * @param user
-	 *            object to marshal into JSON
+	 * @param user object to marshal into JSON
 	 * @return JSON String version of user
 	 */
 	public static String encode(User user) {
-		StringBuffer json = new StringBuffer();
+		if (user == null)
+			return "";
+		
+		JSONObject json = new JSONObject();
+		JSONObject jsonTemp;
 
-		json.append("{");
-
-		if (user.getUserId() != null) {
-			addOptionalElement(json, "userId", user.getUserId().toString());
+		json.put("uuid", user.getUuid());
+		json.put("userId", user.getUserId());
+		json.put("systemId", user.getSystemId());
+		json.put("username", WebUtil.escapeQuotes(user.getUsername()));
+		
+		JSONArray jsonTempArray = new JSONArray();
+		for (Role role : user.getRoles()) {
+			jsonTempArray.put(role.getRole());
 		}
-		json.append("\"systemId\":\"").append(user.getSystemId()).append("\",");
-
-		json.append("\"username\":\"").append(
-				WebUtil.escapeQuotes(user.getUsername())).append("\",");
-
-		json.append("\"name\":{");
+		json.put("roleList", jsonTempArray);
+		
+		jsonTemp = new JSONObject();
 		PersonName name = user.getPersonName();
-		if (name != null) {
-			boolean hasContent = addOptionalElement(json, "prefix", name
-					.getPrefix());
-			hasContent |= addOptionalElement(json, "givenName", name
-					.getGivenName());
-			hasContent |= addOptionalElement(json, "middleName", name
-					.getMiddleName());
-			hasContent |= addOptionalElement(json, "familyName", name
-					.getFamilyName());
-			hasContent |= addOptionalElement(json, "familyName2", name
-					.getFamilyName2());
-			hasContent |= addOptionalElement(json, "familyNameSuffix", name
-					.getFamilyNameSuffix());
-			hasContent |= addOptionalElement(json, "degree", name.getDegree());
-			if (hasContent)
-				json.deleteCharAt(json.length() - 1); // delete last comma if at
-														// least something was
-														// added
-		}
-		json.append("},");
+		jsonTemp.put("prefix", name.getPrefix());
+		jsonTemp.put("givenName", name.getGivenName());
+		jsonTemp.put("middleName", name.getMiddleName());
+		jsonTemp.put("familyName", name.getFamilyName());
+		jsonTemp.put("familyName2", name.getFamilyName2());
+		jsonTemp.put("familyNameSuffix", name.getFamilyNameSuffix());
+		jsonTemp.put("degree", name.getDegree());
+		json.put("name", jsonTemp);
+		
+		Person userPerson = user.getPerson();
+		if (userPerson == null)
+			return json.toString();
 
-		json.append("\"roles\":[");
-		boolean first = true;
-		for (Role r : user.getRoles()) {
-			if (!first)
-				json.append(",");
-			json.append("\"").append(r.getName()).append("\"");
-			first = false;
+		if (userPerson.getBirthdate() != null) {
+			json.put("birthdate", dateFormatter.format(userPerson.getBirthdate()));
+			json.put("birthdateEstimated", userPerson.getBirthdateEstimated());
 		}
 
-		json.append("]");
-
-		json.append("}");
+		json.put("gender", WebUtil.escapeQuotes(userPerson.getGender()));		
+		
+		jsonTempArray = new JSONArray();
+		for (PersonAddress address : userPerson.getAddresses()) {
+			jsonTemp = new JSONObject();
+			if (address.getPreferred())
+				jsonTemp.put("preferred", true);
+			jsonTemp.put("address1", address.getAddress1());
+			jsonTemp.put("address2", address.getAddress2());
+			jsonTemp.put("cityVillage", address.getCityVillage());
+			jsonTemp.put("neighborhoodCell", address.getNeighborhoodCell());
+			jsonTemp.put("region", address.getRegion());
+			jsonTemp.put("subregion", address.getSubregion());
+			jsonTemp.put("countyDistrict", address.getCountyDistrict());
+			jsonTemp.put("stateProvince", address.getStateProvince());
+			jsonTemp.put("country", address.getCountry());
+			jsonTempArray.put(jsonTemp);
+		}
+		json.put("addressList", jsonTempArray);
 
 		return json.toString();
 	}
-
+	
 	/**
-	 * Convenience method for rendering JSON elements
+	 * Create user from JSON representation
 	 * 
-	 * @param json
-	 *            buffer for output
-	 * @param attrName
-	 *            name of element
-	 * @param value
-	 *            the value for the element. if null, then nothing is added to
-	 *            the output buffer
-	 * @return true if an element was added
+	 * @param xml JSON-encoded user
+	 * @return User objected created from details in JSON
 	 */
-	private static boolean addOptionalElement(StringBuffer json,
-			String attrName, String value) {
-		if (value == null || "".equals(value))
-			return false;
-
-		json.append("\"");
-		json.append(attrName);
-		json.append("\":\"");
-		json.append(WebUtil.escapeQuotes(value));
-		json.append("\",");
-
-		return true;
+	public static User decode(String xml) {
+		throw new RuntimeException("User decoding not yet implemented");
 	}
-
-	/**
-	 * Create patient from JSON representation
-	 * 
-	 * @param xml
-	 *            JSON-encoded patient
-	 * @return Patient objected created from details in JSON
-	 */
-	public static Patient decode(String xml) {
-		throw new RuntimeException("Patient decoding not yet implemented");
-	}
-
+	
 }

@@ -2,14 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="web/src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib-common/catalina.jar"/>
 	<classpathentry kind="lib" path="lib-common/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="lib-common/openmrs-1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib-common/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib-common/spring-2.0.jar"/>
-	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.1.10.2442.jar"/>
 	<classpathentry kind="lib" path="lib-common/web-openmrs-api-1.3.0.14.4802.jar"/>
 	<classpathentry kind="lib" path="lib/json-rpc-1.0.jar"/>
+	<classpathentry kind="lib" path="lib-common/openmrs-api-1.6.2.15027-dev.jar"/>
+	<classpathentry kind="lib" path="lib-common/xstream-1.3.1.jar"/>
+	<classpathentry kind="lib" path="lib-common/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="lib-common/tests-openmrs-api-1.6.2.15027-dev.jar"/>
+	<classpathentry kind="lib" path="lib-common/simple-xml-1.6.1-mod.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

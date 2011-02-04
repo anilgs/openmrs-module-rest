@@ -1,87 +1,54 @@
 /**
- * 
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 1.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
+ *
+ * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
 package org.openmrs.module.restmodule;
 
-import java.util.Locale;
-import java.util.Set;
-
-import org.openmrs.Patient;
-import org.openmrs.PersonName;
-import org.openmrs.Role;
 import org.openmrs.User;
+import org.openmrs.module.restmodule.xmlconverters.UserConverter;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
- * 
- *
+ * Facilitates the encoding and decoding of
+ * <code>org.openmrs.User</org> objects to/from
+ * XML.
  */
 public class XmlUser {
 	
-	public static String encode(User user) {
-		StringBuffer xml = new StringBuffer();
-		xml.append("<user userId=\"");
-		xml.append(user.getUserId());
-		xml.append("\" systemId=\"");
-		xml.append(user.getSystemId());
-		xml.append("\" username=\"");
-		xml.append(user.getUsername());
-		xml.append("\">");
-
-		xml.append("<name>");
-		PersonName name = user.getPersonName();
-		if (name != null) {
-			addOptionalElement(xml, "prefix", name.getPrefix());
-			addOptionalElement(xml, "givenName", name.getGivenName());
-			addOptionalElement(xml, "middleName", name.getMiddleName());
-			addOptionalElement(xml, "familyName", name.getFamilyName());
-			addOptionalElement(xml, "familyName2", name.getFamilyName2());
-			addOptionalElement(xml, "degree", name.getDegree());
-		}
-		xml.append("</name>");
-		addOptionalElement(xml, "secretQuestion", user.getSecretQuestion());
-
-		xml.append("<roles>");
-		for (Role r : user.getRoles())
-			addOptionalElement(xml, "role", r.getRole());
-		xml.append("</roles>");
-		xml.append("</user>");
-
-		return xml.toString();
-
-	}
-
 	/**
-	 * Convenience method for rendering XML elements
+	 * Convert a user object into XML
 	 * 
-	 * @param xml
-	 *            buffer for XML output
-	 * @param tag
-	 *            name of tag for element
-	 * @param value
-	 *            the value for the element. if null, then nothing is added to
-	 *            the output buffer
+	 * @param user
+	 *            object to marshal into XML
+	 * @return XML version of user
+	 * @should return a valid XML document
 	 */
-	private static void addOptionalElement(StringBuffer xml, String tag,
-			String value) {
-		if (value == null)
-			return;
-		xml.append("<");
-		xml.append(tag);
-		xml.append(">");
-		xml.append(value);
-		xml.append("</");
-		xml.append(tag);
-		xml.append(">");
+	public static String encode(User user) {
+		XStream xstream = new XStream();
+		xstream.registerConverter(new UserConverter());
+		xstream.alias("user", User.class);
+		return xstream.toXML(user);		
 	}
 
 	/**
-	 * Create patient from XML representation
+	 * Create user from XML representation
 	 * 
 	 * @param xml
-	 *            XML-encoded patient
+	 *            XML-encoded user
 	 * @return User objected created from details in XML
 	 */
 	public static User decode(String xml) {
 		throw new RuntimeException("User decoding not yet implemented");
 	}
+
 }

@@ -15,6 +15,9 @@ package org.openmrs.module.restmodule.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,27 +26,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.restmodule.JsonUser;
+import org.openmrs.module.restmodule.RestUtil;
 import org.openmrs.module.restmodule.XmlUser;
 
+/**
+ * Provides a simple RESTful access to users
+ */
 public class UserResource implements RestResource {
 
+	/**
+	 * Handle all requests to this resource
+	 */
 	public void handleRequest(Operation operation, OutputType outputType,
 			String restRequest, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
 		PrintWriter out = response.getWriter();
 
 		switch (operation) {
 
 		case GET:
-			User user = Context.getUserService().getUser(
-					Integer.valueOf(restRequest));
-
-			try {
-				printUsertList(out, outputType, user);
-			} catch (NumberFormatException e) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				return;
-			}
+			List<User> userList = new ArrayList<User>();
+			userList.add(Context.getUserService()
+					.getUserByUsername(restRequest));
+			printUserList(out, outputType, userList);
 
 			break;
 
@@ -56,24 +62,41 @@ public class UserResource implements RestResource {
 
 	}
 
-	private void printUsertList(PrintWriter out, OutputType outputType,
-			User user) {
+	/**
+	 * Auto generated method comment
+	 * 
+	 * @param out
+	 * @param outputType
+	 * @param patientList
+	 */
+	public static void printUserList(PrintWriter out, OutputType outputType,
+			Collection<User> userList) {
 		if (outputType == OutputType.XML) {
 			out.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			out.print("<userList version=\""
 					+ RestServlet.PATIENT_LIST_XML_VERSION + "\">");
-
-			out.print(XmlUser.encode(user));
-
+			int i = 0;
+			int max = RestUtil.getMaxResults();
+			for (User user : userList) {
+				out.print(XmlUser.encode(user));
+				i++;
+				if (max > 0 && i >= max)
+					break; // if max set, abort before exceeding
+			}
 			out.print("</userList>");
 		} else if (outputType == OutputType.JSON) {
 			out.print("[");
-
-			out.print(JsonUser.encode(user));
-
+			int i = 0;
+			int max = RestUtil.getMaxResults();
+			for (User user : userList) {
+				if (i != 0)
+					out.print(",");
+				out.print(JsonUser.encode(user));
+				i++;
+				if (max > 0 && i >= max)
+					break; // if max set, abort before exceeding
+			}
 			out.print("]");
 		}
-
 	}
-
 }
