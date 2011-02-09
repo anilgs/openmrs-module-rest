@@ -3,10 +3,10 @@
 <module configVersion="1.0">
 	
 	<!-- Base Module Properties -->
-	<id>restmodule</id>
-	<name>REST Module</name>
-	<version>1.4.4.2</version>
-	<package>org.openmrs.module.@MODULE_ID@</package>
+	<id>@MODULE_ID@</id>
+	<name>@MODULE_NAME@</name>
+	<version>@MODULE_VERSION@</version>
+	<package>@MODULE_PACKAGE@</package>
 	<author>Burke Mamlin</author>
 	<description>
 			Very Basic OpenMRS REST Module. Provides access to parts of the
@@ -42,7 +42,7 @@
 	
 	<!-- Required Privileges -->
 	<privilege>
-		<name>Access REST API</name>
+		<name>@MODULE_NAME@</name>
 		<description>Allows user to access REST API functions</description>
 	</privilege>
 	<!-- /Required Privileges -->
